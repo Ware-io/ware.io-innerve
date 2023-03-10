@@ -1,6 +1,7 @@
 let Packages = require("../model/packages.model")
 const router = require("express").Router()
 let Warehouse = require("../model/warehouse.model")
+let Donation = require("../model/donation.model")
 
 router.route("/").get((req, res) => {
     Packages.find()
@@ -66,6 +67,21 @@ router.route('/:id').get((req, res) => {
 router.route('/:id').delete((req, res) => {
     Packages.findByIdAndDelete(req.params.id)
         .then(() => res.json('Packages deleted.'))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/donate/:id').delete((req, res) => {
+    Packages.findByIdAndDelete(req.params.id)
+        .then((data) => {
+            const newDonation = new Donation({
+                package_name : data.package_name,
+                quantity : data.quantity
+            })
+
+            newDonation.save()
+
+            res.json('Packages donated.')
+        })
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
