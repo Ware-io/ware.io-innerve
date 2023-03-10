@@ -1,5 +1,6 @@
 let Packages = require("../model/packages.model")
 const router = require("express").Router()
+let Warehouse = require("../model/warehouse.model")
 
 router.route("/").get((req, res) => {
     Packages.find()
@@ -38,9 +39,21 @@ router.route("/add").post(
             size
         })
 
+        
+
         newPackage.save()
-            .then(() => res.json("Package Added!!!"))
+            .then(() => {
+                const newWareshouse = new Warehouse({
+                    packages_per_warehouse : newPackage._id
+                })
+                newWareshouse.save()
+
+                res.json("Package Added!!!")
+
+            })
             .catch(err => res.status(400).json("Error : " + err))
+
+        
     }
 )
 

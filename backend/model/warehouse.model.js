@@ -6,10 +6,6 @@ const warehouseSchema = new Schema({
     packages_per_warehouse : {
         type : Object,
         required : false
-    },
-    map_id : {
-        type : String,
-        required : true
     }
 
 }, {

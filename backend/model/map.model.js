@@ -12,6 +12,7 @@ const mapSchema = new Schema({
             type : String,
             required : true
         },
+        
         row : new Schema({
             row_name : {
                 type : String,
