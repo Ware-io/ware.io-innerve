@@ -23,9 +23,12 @@ connection.once("open", () => {
 })
 
 const packagesRouter = require('./routes/packages')
+// const createMap = require('./routes/createMap')
+// const createMapRouter = createMap(connection, id)
+
 
 app.use("/packages", packagesRouter)
-
+// app.use("/createMap", createMapRouter)
 app.listen(port, () => {
     console.log(`Server is running on port : ${port}`)
 })

@@ -2,7 +2,7 @@ let Packages = require("../model/packages.model")
 const router = require("express").Router()
 let Warehouse = require("../model/warehouse.model")
 let Donation = require("../model/donation.model")
-
+const insertMap = require('../routes/createMap')
 router.route("/").get((req, res) => {
     Packages.find()
         .then(package => res.json(package))
@@ -13,18 +13,15 @@ router.route("/").get((req, res) => {
 router.route("/add").post(
     (req, res) => {
         const package_name = req.body.package_name
-        const quantity = Number(req.body.selling_price)
+        const quantity = Number(req.body.quantity)
         const date_of_entry = Date.parse(req.body.date_of_entry)
         const date_of_exit = Date.parse(req.body.date_of_exit)
         const date_of_expiry = Date.parse(req.body.date_of_expiry)
-        const selling_price = Number(req.body.cost_price)
+        const selling_price = Number(req.body.selling_price)
         const cost_price = Number(req.body.cost_price)
         const date_of_notification = Date.parse(req.body.date_of_notification)
-        const map_location = req.body.map_location
         const owner_name = req.body.owner_name
         const size = req.body.size
-        
-
 
         const newPackage = new Packages({
             package_name,
@@ -35,27 +32,47 @@ router.route("/add").post(
             selling_price,
             cost_price,
             date_of_notification,
-            map_location,
             owner_name,
             size
         })
 
-        
+
+        // newPackage.save()
+        //     .then(() => {
+        //         const newWareshouse = new Warehouse({
+        //             packages_per_warehouse: newPackage._id
+        //         })
+        //         newWareshouse.save()
+
+        //         res.json("Package Added!!!")
+
+        //     })
+        //     .catch(err => res.status(400).json("Error : " + err))
+
 
         newPackage.save()
-            .then(() => {
-                const newWareshouse = new Warehouse({
-                    packages_per_warehouse : newPackage._id
-                })
-                newWareshouse.save()
-
-                res.json("Package Added!!!")
-
+            .then(data => {
+                Warehouse.findOne({ available: { $lte: data.quantity } })
+                    .then(warehouse => {
+                        if (warehouse) {
+                            // Update the warehouse record with the new package details
+                            warehouse.available = warehouse.available - data.quantity
+                            warehouse.packages_per_warehouse.push(data._id.toString());
+                            warehouse.save();
+                        } else {
+                            const newWareshouse = new Warehouse({
+                                packages_per_warehouse: [data._id.toString()]
+                            })
+                            newWareshouse.save()
+                            res.json("Package Added!!!")
+                        }
+                        res.json("Package Added!!!");
+                    })
             })
             .catch(err => res.status(400).json("Error : " + err))
 
-        
     }
+
 )
 
 router.route('/:id').get((req, res) => {
@@ -74,8 +91,8 @@ router.route('/donate/:id').delete((req, res) => {
     Packages.findByIdAndDelete(req.params.id)
         .then((data) => {
             const newDonation = new Donation({
-                package_name : data.package_name,
-                quantity : data.quantity
+                package_name: data.package_name,
+                quantity: data.quantity
             })
 
             newDonation.save()
