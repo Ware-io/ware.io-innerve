@@ -3,13 +3,12 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const warehouseSchema = new Schema({
-    packages_per_warehouse : {
-        type : Object,
-        required : false
+    packages_per_warehouse: {
+        type: Object,
+        required: false
     }
-
 }, {
-    timestamps : true
+    timestamps: true
 })
 
 const Warehouse = mongoose.model("Warehouse", warehouseSchema)
