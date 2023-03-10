@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 module.exports = function (db, id) {
-    router.post('/insertMap', async (req, res) => {
+    router.post('/createMap', async (req, res) => {
         const data = req.body
         const noOfShelves = data.noOfShelves, noOfRows = data.noOfRows, noOfCols = data.noOfCols
         let shelf = {
