@@ -47,7 +47,7 @@ router.route("/add").post(
                 const newWareshouse = new Warehouse({
                     packages_per_warehouse : newPackage._id
                 })
-                newWareshouse.save()
+                newWareshouse.save().then(dataId => console.log(dataId.id))
 
                 res.json("Package Added!!!")
 
