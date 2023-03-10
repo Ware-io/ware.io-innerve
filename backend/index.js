@@ -22,11 +22,9 @@ connection.once("open", () => {
     console.log("MongoDB Atlas database connected succesfully")
 })
 
-// const productRouter = require('./routes/products')
-// // const usersRouter = require("./routes/users")
+const packagesRouter = require('./routes/packages')
 
-// app.use("/products", productRouter)
-// // app.use("/users", usersRouter)
+app.use("/packages", packagesRouter)
 
 app.listen(port, () => {
     console.log(`Server is running on port : ${port}`)
