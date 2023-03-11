@@ -103,10 +103,10 @@ export default function Iadd () {
           <td>{responseText.time}</td>
           <td>{responseText.image.width}</td>
           <td>{responseText.image.height}</td>
-          <td>{prediction.width}</td>
-          <td>{prediction.height}</td>
-          <td>{prediction.confidence}</td>
-          <td>{prediction.class}</td>
+          <td>{responseText.prediction.width}</td>
+          <td>{responseText.prediction.height}</td>
+          <td>{responseText.prediction.confidence}</td>
+          <td>{responseText.prediction.class}</td>
         </tr>
       ))}
     </tbody>
