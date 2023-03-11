@@ -28,6 +28,8 @@ const packagesRouter = require('./routes/packages')
 
 
 app.use("/packages", packagesRouter)
+
+
 // app.use("/createMap", createMapRouter)
 app.listen(port, () => {
     console.log(`Server is running on port : ${port}`)

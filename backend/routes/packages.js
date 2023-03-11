@@ -3,6 +3,7 @@ const router = require("express").Router()
 let Warehouse = require("../model/warehouse.model")
 let Donation = require("../model/donation.model")
 const insertMap = require('../routes/createMap')
+const Detection = require("../model/iadd.model")
 router.route("/").get((req, res) => {
     Packages.find()
         .then(package => res.json(package))
@@ -156,5 +157,23 @@ router.route('/update/:id').post((req, res) => {
         })
         .catch(err => res.status(400).json('Error: ' + err));
 });
+
+
+router.route("/detections").post((req, res) => {
+    const { time, imageWidth, imageHeight, detections } = req.body;
+  
+    try {
+      const newDetection = new Detection({
+        time,
+        imageWidth,
+        imageHeight,
+        detections
+      });
+      newDetection.save();
+      res.status(201).json({ message: "Detection saved successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Error saving detection" });
+    }
+  });
 
 module.exports = router
