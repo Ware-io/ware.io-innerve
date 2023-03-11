@@ -51,7 +51,7 @@ router.route("/add").post(
 
 
         newPackage.save()
-<<<<<<< HEAD
+
             .then(data => {
                 Warehouse.findOne({ available: { $lte: data.quantity } })
                     .then(warehouse => {
@@ -62,12 +62,14 @@ router.route("/add").post(
                             warehouse.save();
                         } else {
                             const newWareshouse = new Warehouse({
-                                packages_per_warehouse: [data._id.toString()]
+                                packages_per_warehouse: [data._id.toString()],
+                                total : 100,
+                                available : 100
                             })
                             newWareshouse.save()
                             res.json("Package Added!!!")
                         }
-                        res.json("Package Added!!!");
+                        // res.json("Package Added!!!");
                     })
             })
             .catch(err => res.status(400).json("Error : " + err))
