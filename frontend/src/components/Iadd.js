@@ -1,10 +1,13 @@
 import NavBar from "./NavBar";
 import React, { useState, useRef } from "react";
 import axios from "axios";
+import Table from 'react-bootstrap/Table';
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 export default function Iadd() {
   const [streaming, setStreaming] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [responseText, setResponseText] = useState("");
   const videoRef = useRef(null);
 
   const handleStream = () => {
@@ -51,6 +54,7 @@ export default function Iadd() {
         })
           .then(function (response) {
             console.log(response.data);
+            setResponseText(JSON.stringify(response.data));
             handleStream();
           })
           .catch(function (error) {
@@ -63,14 +67,51 @@ export default function Iadd() {
   return (
     <>
       <NavBar />
-
       <div>
         <video ref={videoRef} />
         <button onClick={handleStream}>
           {streaming ? "Stop" : "Start"} Streaming
         </button>
         <button onClick={handleDetect}>Detect Objects</button>
+        {responseText && (
+          <div>
+            <p>Response:</p>
+            <h4>{responseText}</h4>
+          </div>
+        )}
       </div>
+
+      {responseText && responseText.hasOwnProperty("image") && (
+        <Table striped bordered hover variant="dark" responsive>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Time</th>
+              <th>Img_Width</th>
+              <th>Img_Height</th>
+              <th>Package_Width</th>
+              <th>Package_Height</th>
+              <th>Confidence</th>
+              <th>Class</th>
+            </tr>
+          </thead>
+          <tbody>
+            {responseText.predictions.map((prediction, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{responseText.time}</td>
+                <td>{responseText.image.width}</td>
+                <td>{responseText.image.height}</td>
+                <td>{responseText.prediction.width}</td>
+                <td>{responseText.prediction.height}</td>
+                <td>{responseText.prediction.confidence}</td>
+                <td>{responseText.prediction.class}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
+
     </>
   );
 }
