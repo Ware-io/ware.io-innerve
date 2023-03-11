@@ -51,6 +51,7 @@ router.route("/add").post(
 
 
         newPackage.save()
+<<<<<<< HEAD
             .then(data => {
                 Warehouse.findOne({ available: { $lte: data.quantity } })
                     .then(warehouse => {

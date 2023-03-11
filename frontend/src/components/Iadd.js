@@ -1,10 +1,9 @@
-import './App.css';
+import NavBar from "./NavBar";
 import React, { useState, useRef } from "react";
 import axios from "axios";
 
-
-function App() {
-  const [streaming, setStreaming] = useState(false);
+export default function Iadd () {
+    const [streaming, setStreaming] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const videoRef = useRef(null);
 
@@ -62,7 +61,8 @@ function App() {
   };
 
   return (
-    <div>
+    <>
+    <NavBar />
       <div>
         <video ref={videoRef} />
         <button onClick={handleStream}>
@@ -70,8 +70,6 @@ function App() {
         </button>
         <button onClick={handleDetect}>Detect Objects</button>
       </div>
-    </div>
+    </>
   );
-};
-
-export default App;
+}
