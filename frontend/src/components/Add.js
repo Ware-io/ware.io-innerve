@@ -1,80 +1,129 @@
 import NavBar from "./NavBar";
 import { Card, Form, Button } from 'react-bootstrap';
 import "./style.css"
+import { useRef } from "react";
+import axios from 'axios';
 
-export default function Add () {
-    return (
-        <>
-        <NavBar />
-            <div className="centered-form">
-      <Card>
-        <Card.Header>
-          <h4>Add Packages</h4>
-        </Card.Header>
-        <Card.Body>
-          <Form>
-            <Form.Group>
-              <Form.Label className="my-3">Package Name</Form.Label>
-              <Form.Control type="text" placeholder="Enter Package Name" required />
-            </Form.Group>
+export default function Add() {
+  const package_name = useRef();
+  const quantity = useRef();
+  const date_of_entry = useRef();
+  const date_of_exit = useRef();
+  const date_of_expiry = useRef();
+  const selling_price = useRef();
+  const cost_price = useRef();
+  const date_of_notification = useRef();
+  const mapLocRef = useRef();
+  const owner_name = useRef();
+  const size = useRef();
 
-            <Form.Group className="my-3">
-              <Form.Label>Quantity</Form.Label>
-              <Form.Control type="text" placeholder="Enter Quantity" required/>
-            </Form.Group>
-            <Form.Group className="my-3">
-              <Form.Label>Date Of Entry</Form.Label>
-              <Form.Control type="date" placeholder="Enter Date Of Entry" required/>
-            </Form.Group>
-            <Form.Group className="my-3">
-              <Form.Label>Date Of Exit</Form.Label>
-              <Form.Control type="date" placeholder="Enter Date Of Exit" required/>
-            </Form.Group>
-            <Form.Group className="my-3">
-              <Form.Label>Date Of Expiry</Form.Label>
-              <Form.Control type="date" placeholder="Enter Date Of Expiry" required/>
-            </Form.Group>
-            <Form.Group className="my-3">
-              <Form.Label>Selling Price</Form.Label>
-              <Form.Control type="number" placeholder="Enter Selling Price" required/>
-            </Form.Group>
-            <Form.Group className="my-3">
-              <Form.Label>Cost Price</Form.Label>
-              <Form.Control type="number" placeholder="Enter Cost Price" required/>
-            </Form.Group>
-            <Form.Group className="my-3">
-              <Form.Label>Date Of Notification</Form.Label>
-              <Form.Control type="date" placeholder="Enter Date Of Notification" required/>
-            </Form.Group>
-            <Form.Group className="my-3">
-              <Form.Label>Map Location</Form.Label>
-              <Form.Control type="text" placeholder="Your Map Location" required/>
-            </Form.Group>
-            <Form.Group className="my-3">
-              <Form.Label>Owner Name</Form.Label>
-              <Form.Control type="text" placeholder="Enter Your Name" required/>
-            </Form.Group>
-            <Form.Group className="my-3">
-              <Form.Label>Package Size</Form.Label>
-              <Form.Select required>
-        <option>Default select</option>
-        <option>Small</option>
-        <option>Medium</option>
-        <option>Large</option>
 
-      </Form.Select>
-            </Form.Group>
+  let rec;
+  const handleSubmit = () => {
+    rec = { package_name, quantity, date_of_entry, date_of_exit, date_of_expiry, selling_price, cost_price, date_of_notification, owner_name, size }
+    const replacer = (key, value) => {
+      if (typeof value === 'object' && value !== null) {
+        if (cache.includes(value)) {
+          return '[Circular]';
+        }
+        cache.push(value);
+      }
+      return value;
+    };
+    const cache = [];
+    const postFormData = async () => {
+      try {
+        const data = JSON.stringify(rec, replacer);
+        const response = await axios.post('http://localhost:5000/packages/add', data);
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+      console.log("Form data: ", rec)
+    }
+    postFormData()
+  }
 
-            <div className="d-flex justify-content-center align-items-center">
-              <Button variant="primary" type="submit" className="my-3">
-                Submit
-              </Button>
-            </div>
-          </Form>
-        </Card.Body>
-      </Card>
-    </div>
-        </>
 
-    )
+  return (
+    <>
+      <NavBar />
+      <div className="centered-form">
+        <Card style={{ display: "flex", width: "calc(100% - 8rem)", margin: "0rem 0rem -2rem 0rem", boxShadow: "0rem 0rem 3rem lightgray" }}>
+          <Card.Header style={{ padding: "1rem 0rem .5rem 1rem" }}>
+            <h5>Add Packages</h5>
+          </Card.Header>
+          <Card.Body style={{ display: "flex" }}>
+            <Form style={{ width: "100%", padding: "1rem", marginTop: "-0.5rem" }}>
+              <Form.Group>
+                <Form.Label className="my-3">Package Name</Form.Label>
+                <Form.Control type="text" placeholder="Enter Package Name" ref={package_name} required />
+              </Form.Group>
+              <Form.Group className="my-3">
+                <Form.Label>Quantity</Form.Label>
+                <Form.Control type="number" min="0" placeholder="Enter Quantity" ref={quantity} required />
+              </Form.Group>
+              <Form.Group className="my-3">
+                <Form.Label>Date Of Entry</Form.Label>
+                <Form.Control type="date" placeholder="Enter Date Of Entry" ref={date_of_entry} required
+                />
+              </Form.Group>
+              <Form.Group className="my-3">
+                <Form.Label>Date Of Exit</Form.Label>
+                <Form.Control type="date" placeholder="Enter Date Of Exit" ref={date_of_exit} required />
+              </Form.Group>
+            </Form>
+            <Form style={{ width: "100%", padding: "1rem" }}>
+              <Form.Group className="my-3">
+                <Form.Label>Date Of Expiry</Form.Label>
+                <Form.Control type="date" placeholder="Enter Date Of Expiry" ref={date_of_expiry} required />
+              </Form.Group>
+              <Form.Group className="my-3">
+                <Form.Label>Selling Price</Form.Label>
+                <Form.Control type="number" min="0" placeholder="Enter Selling Price" ref={selling_price} required />
+              </Form.Group>
+              <Form.Group className="my-3">
+                <Form.Label>Cost Price</Form.Label>
+                <Form.Control type="number" min="0" placeholder="Enter Cost Price" ref={cost_price} required />
+              </Form.Group>
+              <Form.Group className="my-3">
+                <Form.Label>Date Of Notification</Form.Label>
+                <Form.Control type="date" placeholder="Enter Date Of Notification" ref={date_of_notification} required />
+              </Form.Group>
+            </Form>
+            <Form style={{ width: "100%", padding: "1rem" }}>
+              <Form.Group className="my-3">
+                <Form.Label>Map Location</Form.Label>
+                <Form.Control type="text" placeholder="Your Map Location" ref={mapLocRef} required />
+              </Form.Group>
+              <Form.Group className="my-3">
+                <Form.Label>Owner Name</Form.Label>
+                <Form.Control type="text" placeholder="Enter Your Name" ref={owner_name} required />
+              </Form.Group>
+              <Form.Group className="my-3">
+                <Form.Label>Package Size</Form.Label>
+                <Form.Select required ref={size}>
+                  <option disabled>Select Size</option>
+                  <option>Small</option>
+                  <option>Medium</option>
+                  <option>Large</option>
+                </Form.Select>
+              </Form.Group>
+
+              <div className="d-flex justify-content-center align-items-center" style={{
+                marginTop: "2rem"
+              }}>
+                <Button variant="primary" className="my-3" style={{
+                  width: "100%"
+                }} onClick={() => { handleSubmit() }}>
+                  Submit
+                </Button>
+              </div>
+            </Form>
+          </Card.Body>
+        </Card>
+      </div>
+    </>
+
+  )
 }

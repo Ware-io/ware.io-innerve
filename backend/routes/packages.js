@@ -53,24 +53,25 @@ router.route("/add").post(
         newPackage.save()
 
             .then(data => {
-                Warehouse.findOne({ available: { $lte: data.quantity } })
-                    .then(warehouse => {
-                        if (warehouse) {
-                            // Update the warehouse record with the new package details
-                            warehouse.available = warehouse.available - data.quantity
-                            warehouse.packages_per_warehouse.push(data._id.toString());
-                            warehouse.save();
-                        } else {
-                            const newWareshouse = new Warehouse({
-                                packages_per_warehouse: [data._id.toString()],
-                                total : 100,
-                                available : 100
-                            })
-                            newWareshouse.save()
-                            res.json("Package Added!!!")
-                        }
-                        // res.json("Package Added!!!");
-                    })
+                Warehouse.findOne({ available: { $lte: data.quantity } }, function (err, warehouse) {
+                    if (err) {
+                        console.error(`Error: ${err}`)
+                        return
+                    } if (warehouse) {
+                        // Update the warehouse record with the new package details
+                        warehouse.available = warehouse.available - data.quantity
+                        warehouse.packages_per_warehouse.push(data._id.toString());
+                        warehouse.save();
+                    } else {
+                        const newWareshouse = new Warehouse({
+                            packages_per_warehouse: [data._id.toString()],
+                            total: 100,
+                            available: 100
+                        })
+                        newWareshouse.save()
+                        res.json("Package Added!!!")
+                    }
+                })
             })
             .catch(err => res.status(400).json("Error : " + err))
 

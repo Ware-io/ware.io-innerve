@@ -35,10 +35,6 @@ const packagesSchema = new Schema({
         type: Date,
         required: false
     },
-    owner_name: {
-        type: String,
-        required: true
-    },
     size: {
         type: String,
         required: true
