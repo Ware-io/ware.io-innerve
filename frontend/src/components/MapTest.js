@@ -1,8 +1,8 @@
 import Slots from './slots'
 import { useState } from 'react';
 import {useEffect} from 'react'
-import Popup from 'reactjs-popup';
-import './MapTest.css'
+// import Popup from 'reactjs-popup';
+// import './MapTest.css'
 function MapTest({shelf,row,col}){
 
     //Making dynamic map
