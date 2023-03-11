@@ -13,7 +13,7 @@ export default function Add() {
   const selling_price = useRef();
   const cost_price = useRef();
   const date_of_notification = useRef();
-  const mapLocRef = useRef();
+  const map_location = useRef();
   const owner_name = useRef();
   const size = useRef();
 
@@ -30,6 +30,7 @@ export default function Add() {
       "cost_price": cost_price.current.value,
       "date_of_notification": date_of_notification.current.value,
       "owner_name": owner_name.current.value,
+      "map_location": map_location.current.value,
       "size": size.current.value
     }
     const postFormData = async () => {
@@ -40,7 +41,6 @@ export default function Add() {
       } catch (error) {
         console.error(error);
       }
-      console.log("Form data: ", rec)
     }
     postFormData()
   }
@@ -95,7 +95,7 @@ export default function Add() {
             <Form style={{ width: "100%", padding: "1rem" }}>
               <Form.Group className="my-3">
                 <Form.Label>Map Location</Form.Label>
-                <Form.Control type="text" placeholder="Your Map Location" ref={mapLocRef} required />
+                <Form.Control type="text" placeholder="Your Map Location" ref={map_location} required />
               </Form.Group>
               <Form.Group className="my-3">
                 <Form.Label>Owner Name</Form.Label>

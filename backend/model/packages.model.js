@@ -35,6 +35,10 @@ const packagesSchema = new Schema({
         type: Date,
         required: false
     },
+    map_location: {
+        type: String,
+        required: true
+    },
     size: {
         type: String,
         required: true

@@ -21,6 +21,7 @@ router.route("/add").post(
         const cost_price = Number(req.body.cost_price)
         const date_of_notification = Date.parse(req.body.date_of_notification)
         const owner_name = req.body.owner_name
+        const map_location = req.body.map_location
         const size = req.body.size
 
         const newPackage = new Packages({
@@ -33,6 +34,7 @@ router.route("/add").post(
             cost_price,
             date_of_notification,
             owner_name,
+            map_location,
             size
         })
 

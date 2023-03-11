@@ -2,8 +2,8 @@ import NavBar from "./NavBar";
 import React, { useState, useRef } from "react";
 import axios from "axios";
 
-export default function Iadd () {
-    const [streaming, setStreaming] = useState(false);
+export default function Iadd() {
+  const [streaming, setStreaming] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const videoRef = useRef(null);
 
@@ -49,11 +49,11 @@ export default function Iadd () {
             "Content-Type": "application/x-www-form-urlencoded"
           }
         })
-          .then(function(response) {
+          .then(function (response) {
             console.log(response.data);
             handleStream();
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error.message);
           });
       };
@@ -62,7 +62,8 @@ export default function Iadd () {
 
   return (
     <>
-    <NavBar />
+      <NavBar />
+
       <div>
         <video ref={videoRef} />
         <button onClick={handleStream}>
