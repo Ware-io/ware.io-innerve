@@ -53,24 +53,54 @@ router.route("/add").post(
         newPackage.save()
 
             .then(data => {
-                Warehouse.findOne({ available: { $lte: data.quantity } })
-                    .then(warehouse => {
-                        if (warehouse) {
-                            // Update the warehouse record with the new package details
-                            warehouse.available = warehouse.available - data.quantity
-                            warehouse.packages_per_warehouse.push(data._id.toString());
-                            warehouse.save();
-                        } else {
-                            const newWareshouse = new Warehouse({
-                                packages_per_warehouse: [data._id.toString()],
-                                total : 100,
-                                available : 100
+                // console.log(data)
+                Warehouse.find()
+                    .then((temp) => {
+                        console.log(temp)
+                        if (temp) {
+                            Warehouse.findByIdAndUpdate(temp[0]._id, {$inc: {"available" : -newPackage.quantity}}).then((result)=>{
+                                    // result.available = result.available - data.quantity
+                                    // console.log(warehouse.ress_per_warehouse)
+                                    // result.packages_per_warehouse.push(data._id.toString());
+                                    // result.save()
+                                    res.json('package updated!');
+                            }).catch((err)=>{
+                                res.status(400).json('Error: ' + err);
                             })
-                            newWareshouse.save()
-                            res.json("Package Added!!!")
                         }
-                        // res.json("Package Added!!!");
                     })
+
+
+                    // .then(warehouse => {
+                    //     // console.log(warehouse[0]._id)
+                    //     if (warehouse[0]) {
+                    //         // Update the warehouse record with the new package details
+                    //         Warehouse.findById(warehouse[0]._id)
+                    //             .then((model) => {
+                    //                 warehouse[0].available = warehouse[0].available - data.quantity
+                    //                 // console.log(warehouse.packages_per_warehouse)
+                    //                 warehouse[0].packages_per_warehouse.push(data._id.toString());
+                    //             }).then(() => {
+                    //                 res.json("Records updated")
+                    //             })
+                                
+                            
+                            
+                            
+                    //         // warehouse.save();
+                    //         // res.json("package updated!!!")
+                    //     } 
+                        // else {
+                        //     const newWareshouse = new Warehouse({
+                        //         packages_per_warehouse: [data._id.toString()],
+                        //         total : 100,
+                        //         available : 100
+                        //     })
+                        //     newWareshouse.save()
+                        //     res.json("Package Added!!!")
+                        // }
+                        // res.json("Package Added!!!");
+                    // })
             })
             .catch(err => res.status(400).json("Error : " + err))
 
