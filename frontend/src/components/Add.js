@@ -20,21 +20,22 @@ export default function Add() {
 
   let rec;
   const handleSubmit = () => {
-    rec = { package_name, quantity, date_of_entry, date_of_exit, date_of_expiry, selling_price, cost_price, date_of_notification, owner_name, size }
-    const replacer = (key, value) => {
-      if (typeof value === 'object' && value !== null) {
-        if (cache.includes(value)) {
-          return '[Circular]';
-        }
-        cache.push(value);
-      }
-      return value;
-    };
-    const cache = [];
+    rec = {
+      "package_name": package_name.current.value,
+      "quantity": quantity.current.value,
+      "date_of_entry": date_of_entry.current.value,
+      "date_of_exit": date_of_exit.current.value,
+      "date_of_expiry": date_of_expiry.current.value,
+      "selling_price": selling_price.current.value,
+      "cost_price": cost_price.current.value,
+      "date_of_notification": date_of_notification.current.value,
+      "owner_name": owner_name.current.value,
+      "size": size.current.value
+    }
     const postFormData = async () => {
       try {
-        const data = JSON.stringify(rec, replacer);
-        const response = await axios.post('http://localhost:5000/packages/add', data);
+        // const data = JSON.stringify(rec);
+        const response = await axios.post('http://localhost:5000/packages/add', rec);
         console.log(response.data);
       } catch (error) {
         console.error(error);
