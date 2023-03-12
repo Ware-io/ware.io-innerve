@@ -36,7 +36,7 @@ export default function Add() {
     const postFormData = async () => {
       try {
         // const data = JSON.stringify(rec);
-        const response = await axios.post(`${process.env.BACKEND_URL}/packages/add`, rec);
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/packages/add`, rec);
         console.log(response.data);
       } catch (error) {
         console.error(error);
